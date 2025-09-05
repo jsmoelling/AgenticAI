@@ -1,6 +1,5 @@
 # Visualizing Agentic Systems (GitHub‑safe Mermaid)
 
-These diagrams are **ready to paste** into your Study_Guide.md or GitHub docs. They use conservative Mermaid syntax: ASCII labels and no parentheses inside node labels.
 
 ---
 
@@ -74,7 +73,7 @@ flowchart TB
   R --> OUT[Outputs: answers, actions, artifacts]
 ```
 
-### 2B. Subgraph version (works on GitHub when copied exactly)
+### 2B. Subgraph version
 
 ```mermaid
 flowchart TB
@@ -219,7 +218,3 @@ flowchart LR
 
 ---
 
-### Paste Tips
-- Ensure a **blank line** before and after each ```mermaid fence.
-- Avoid parentheses inside labels; use "or" and commas instead.
-- If a diagram fails, try the **2A Minimal** version first.
