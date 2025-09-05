@@ -4,7 +4,8 @@
 **Start Date:** September 2, 2025
 
 The Complete Agentic AI Engineering Course (2025)
-Created by Ed Donner 
+Created by Ed Donner
+
 https://www.udemy.com/course/the-complete-agentic-ai-engineering-course
 
 This hands-on cohort course will upskill participants on cutting-edge Agentic AI technologies through real-world projects using **OpenAI Agents SDK, CrewAI, LangGraph, AutoGen, and MCP**. Over six weeks, the team will build **8 AI agent solutions** — ranging from research and automation agents to autonomous developer teams and trading systems.
