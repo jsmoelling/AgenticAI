@@ -1,6 +1,6 @@
-# Visualizing Agentic Systems (Handout)
+# Visualizing Agentic Systems (GitHub‑safe Mermaid)
 
-These diagrams are **ready to paste** into your Study_Guide.md or GitHub docs. They visualize agents per our definition: *a system that uses an LLM in a loop of reasoning + acting, guided by goals and context, choosing tools, with guardrails, HITL, memory, and clear termination criteria.*
+These diagrams are **ready to paste** into your Study_Guide.md or GitHub docs. They use conservative Mermaid syntax: ASCII labels and no parentheses inside node labels.
 
 ---
 
@@ -17,7 +17,7 @@ flowchart LR
   subgraph Agent
     R[Reasoner / Planner]
     TSel[Tool Selector]
-    M[(Memory / Session State)]
+    M[Memory / Session State]
     TCrit{Termination Check?}
   end
 
@@ -27,10 +27,10 @@ flowchart LR
     B[Budget / Timeout]
   end
 
-  subgraph Env[Environment & Tools]
-    Tool1[(APIs)]
-    Tool2[(DB / Vector Store)]
-    Tool3[(Web / Search)]
+  subgraph Env[Environment and Tools]
+    Tool1[APIs]
+    Tool2[DB or Vector Store]
+    Tool3[Web or Search]
   end
 
   Inputs --> R
@@ -51,48 +51,64 @@ flowchart LR
   B -. monitors .- R
   H --> R
   TCrit -->|No| R
-  TCrit -->|Yes| O[(Output / Report / Action Plan)]
+  TCrit -->|Yes| O[Output or Report]
 ```
-
-**Read it like this:** goals + context feed a **Reasoner** that selects tools, collects observations, updates **Memory**, checks **guardrails/budget/HITL**, and repeats until **termination criteria** is met.
 
 ---
 
-## 2) Agent Anatomy (what’s inside an agent)
+## 2) Agent Anatomy (what is inside an agent)
+
+### 2A. Minimal version (no subgraphs, maximally compatible)
 
 ```mermaid
 flowchart TB
-  subgraph Agent[Agent]
-    P[Policy / Instructions]
-    R[Reasoning Engine (LLM)]
-    MS[(Memory Store)]
-    EV[Evals / Tracing Hooks]
-    GA[Guardrails: schemas • allowlists • PII filters]
-    AU[Autonomy: step limits • budgets • timeouts]
-    TS[Tooling Adapters]
+  IN[Inputs: goals, messages, events] --> P[Policy and Instructions]
+  P --> R[Reasoning Engine or LLM]
+  R --> MS[Memory Store]
+  R --> TS[Tool Adapters]
+  TS --> TOOLS[APIs, DBs, Search, File IO]
+  R --> DATA[Docs, Vector DB, Knowledge Base]
+  GA[Guardrails: schemas, allowlists, PII filters] --> R
+  AU[Autonomy: step limits, budgets, timeouts] --> R
+  EV[Evals and Tracing Hooks] --> R
+  R --> OUT[Outputs: answers, actions, artifacts]
+```
+
+### 2B. Subgraph version (works on GitHub when copied exactly)
+
+```mermaid
+flowchart TB
+  subgraph Agent
+    P[Policy and Instructions]
+    R[Reasoning Engine or LLM]
+    MS[Memory Store]
+    EV[Evals and Tracing Hooks]
+    GA[Guardrails: schemas, allowlists, PII filters]
+    AU[Autonomy: step limits, budgets, timeouts]
+    TS[Tool Adapters]
   end
 
   subgraph Interfaces
-    IN[Inputs: goals • user msgs • events]
-    OUT[Outputs: answers • actions • artifacts]
+    IN[Inputs: goals, user messages, events]
+    OUT[Outputs: answers, actions, artifacts]
   end
 
   subgraph External
-    TOOLS[(APIs • DBs • Search • File I/O)]
-    DATA[(Docs • Vector DB • KB)]
+    TOOLS[APIs, DBs, Search, File IO]
+    DATA[Docs, Vector DB, Knowledge Base]
   end
 
-  IN --> P --> R
-  R -->|read/write| MS
-  R -->|via| TS --> TOOLS
+  IN --> P
+  P --> R
+  R --> MS
+  R --> TS
+  TS --> TOOLS
   R --> DATA
   GA --> R
   AU --> R
   EV --> R
   R --> OUT
 ```
-
-**Notes:** treat **Memory** as data you can version/audit. **Guardrails** and **Autonomy** are first‑class, not afterthoughts.
 
 ---
 
@@ -102,47 +118,43 @@ flowchart TB
 flowchart LR
   A1[Single Agent] --> OUT1[Result]
 
-  subgraph Crew[Coordinator + Workers]
+  subgraph Crew
     C[Coordinator Agent] --> W1[Worker 1]
     C --> W2[Worker 2]
     W1 --> C
     W2 --> C
   end
 
-  subgraph Graph[LangGraph-style]
-    N1[Node: Retrieve] --> N2[Node: Reason]
-    N2 -->|tool call| N3[Node: Act]
+  subgraph Graph
+    N1[Node Retrieve] --> N2[Node Reason]
+    N2 -->|tool call| N3[Node Act]
     N3 --> N4{Check Termination?}
     N4 -- No --> N2
     N4 -- Yes --> N5[Emit Result]
   end
 ```
 
-**Map to frameworks:** Single agent (OpenAI Agents SDK); Coordinator/workers (AutoGen, CrewAI); Graph loop (LangGraph).
-
 ---
 
-## 4) HITL & Guardrails (who’s in control)
+## 4) HITL and Guardrails (who is in control)
 
 ```mermaid
 sequenceDiagram
   participant U as User
   participant A as Agent
-  participant G as Guardrail/Policy
+  participant G as Guardrail or Policy
   participant H as Human Reviewer
-  participant T as Tool/API
+  participant T as Tool or API
 
-  U->>A: Goal / Task
+  U->>A: Goal or Task
   A->>G: Validate request (policy, schema)
-  G-->>A: Allowed / Blocked / Redact
-  A->>T: Tool call (if allowed)
+  G-->>A: Allowed or Blocked or Redact
+  A->>T: Tool call if allowed
   T-->>A: Observation
   A->>H: HITL checkpoint (risky action)
-  H-->>A: Approve / Revise / Reject
-  A-->>U: Result + Trace
+  H-->>A: Approve or Revise or Reject
+  A-->>U: Result and Trace
 ```
-
-**Idea:** Explicit **checkpoints** for risky actions (payments, data writes).
 
 ---
 
@@ -150,19 +162,17 @@ sequenceDiagram
 
 ```mermaid
 flowchart LR
-  A[Agent / Client] <-- MCP --> S1[MCP Server: Files]
-  A <-- MCP --> S2[MCP Server: DB/SQL]
-  A <-- MCP --> S3[MCP Server: Web/Search]
-  S1 --- ToolA[(read/write files)]
-  S2 --- ToolB[(parameterized queries)]
-  S3 --- ToolC[(search • fetch • crawl)]
+  A[Agent or Client] <-- MCP --> S1[MCP Server Files]
+  A <-- MCP --> S2[MCP Server SQL]
+  A <-- MCP --> S3[MCP Server Web]
+  S1 --- ToolA[read or write files]
+  S2 --- ToolB[parameterized queries]
+  S3 --- ToolC[search, fetch, crawl]
 ```
-
-**Why it matters:** **Standardizes** how agents discover/call tools & data. Servers expose capabilities; clients (agents) consume them consistently.
 
 ---
 
-## 6) Autonomy & Termination (state view)
+## 6) Autonomy and Termination (state view)
 
 ```mermaid
 stateDiagram-v2
@@ -170,13 +180,11 @@ stateDiagram-v2
   Plan --> Act
   Act --> Observe
   Observe --> Check
-  Check --> Plan: Not done, within budget
+  Check --> Plan: Not done and within budget
   Check --> [*]: Goal met
-  Check --> [*]: Budget/timeout exceeded
-  Check --> [*]: No progress (stall)
+  Check --> [*]: Budget or timeout exceeded
+  Check --> [*]: No progress
 ```
-
-**Make this concrete** with thresholds: step_limit, money_limit, time_limit, no_improvement_k.
 
 ---
 
@@ -185,37 +193,33 @@ stateDiagram-v2
 ```mermaid
 flowchart TB
   Q{Is control flow known and stable?}
-  Q -->|Yes| WF[Use a Workflow/Script]
-  Q -->|No| Q2{Does the task require tool choice/iteration?}
+  Q -->|Yes| WF[Use a Workflow or Script]
+  Q -->|No| Q2{Does the task need tool choice and iteration?}
   Q2 -->|No| WF
-  Q2 -->|Yes| Q3{Is risk bounded with guardrails/HITL?}
+  Q2 -->|Yes| Q3{Are guardrails and HITL in place?}
   Q3 -->|No| PREP[Add guardrails, budgets, checkpoints]
   PREP --> Q3
   Q3 -->|Yes| AGT[Use an Agentic Loop]
 ```
 
-**Rule of thumb:** Prefer scripts for deterministic tasks; reserve agents for **open‑ended** goals needing tool choice + iteration.
-
 ---
 
-## 8) Evals & Telemetry (close the loop)
+## 8) Evals and Telemetry (close the loop)
 
 ```mermaid
 flowchart LR
-  SPEC[Task Spec & Testcases] --> RUN[Run Agent]
-  RUN --> TRACE[Collect Traces/Spans]
-  RUN --> METRICS[Success • Cost • Latency • Incidents]
-  TRACE --> REG[Regression & Diff Tools]
+  SPEC[Task Spec and Testcases] --> RUN[Run Agent]
+  RUN --> TRACE[Collect Traces and Spans]
+  RUN --> METRICS[Success, Cost, Latency, Incidents]
+  TRACE --> REG[Regression and Diff Tools]
   METRICS --> REG
-  REG --> IMP[Refine prompts • tools • policies]
+  REG --> IMP[Refine prompts, tools, policies]
   IMP --> RUN
 ```
 
-**Outcome:** A measurable improvement loop, not vibes.
-
 ---
 
-### Tips for Use
-- Paste any diagram into GitHub markdown (Mermaid supported).  
-- Create variants per framework (OpenAI Agents SDK, CrewAI, LangGraph, AutoGen).  
-- Keep **guardrails/HITL/budgets** visible in every picture to reinforce safety and control.
+### Paste Tips
+- Ensure a **blank line** before and after each ```mermaid fence.
+- Avoid parentheses inside labels; use "or" and commas instead.
+- If a diagram fails, try the **2A Minimal** version first.
