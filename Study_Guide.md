@@ -22,9 +22,6 @@ This guide is a **living document**: add notes, questions, and insights as you p
 - [Anthropic — Model Context Protocol (MCP)](https://www.anthropic.com/news/model-context-protocol) *(emerging interoperability standard)*  
 - [Sourcegraph — Revenge of the Junior Developer](https://sourcegraph.com/blog/revenge-of-the-junior-developer) *(market framing: completions → chat → agentic)*  
 
-**Lab 1**  
-- Build a simple agentic workflow with the OpenAI API  
-- Tools: Cursor IDE, UV, Jupyter  
 
 **Reflection Prompts**  
 - What’s the difference between a workflow and an agent?  
