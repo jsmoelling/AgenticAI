@@ -21,7 +21,7 @@ This guide is a **living document**: add notes, questions, and insights as you p
 - [Anthropic — Building Effective Agents](https://www.anthropic.com/research/building-effective-agents) *(principles for designing useful/safe agents)*  
 - [Anthropic — Model Context Protocol (MCP)](https://www.anthropic.com/news/model-context-protocol) *(emerging interoperability standard)*  
 - [Sourcegraph — Revenge of the Junior Developer](https://sourcegraph.com/blog/revenge-of-the-junior-developer) *(market framing: completions → chat → agentic)*  
-
+- [Hugging Face — What are Agents?](https://huggingface.co/learn/agents-course/en/unit1/what-are-agents) *(Hugging Face Agents Course)*
 
 **Reflection Prompts**  
 - What’s the difference between a workflow and an agent?  
