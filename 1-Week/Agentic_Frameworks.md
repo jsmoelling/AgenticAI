@@ -4,7 +4,7 @@
 
 ---
 
-## TL;DR
+## Executive Summary
 
 - **Agentic frameworks** give you *primitives* for: tool‑use, planning, state/memory, guardrails, evaluation, and orchestration.
 - Pick based on **orchestration model** (loop vs. graph), **reliability needs** (durable state & HIL), **cloud/platform fit**, and **multi‑agent** requirements.
