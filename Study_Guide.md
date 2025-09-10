@@ -32,7 +32,6 @@ This guide is a **living document**: add notes, questions, and insights as you p
 
 ## Week 2 – OpenAI Agents SDK
 **Primers**  
-- [Overview](https://platform.openai.com/docs/guides/agents)  
 - [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/)  
 - [Async Python guide](https://github.com/ed-donner/agents/blob/main/guides/11_async_python.ipynb)
 - [Vibe coding guide:](https://github.com/ed-donner/agents/blob/main/guides/07_vibe_coding_and_debugging.ipynb)
