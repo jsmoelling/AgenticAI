@@ -1,4 +1,4 @@
-# Agentic AI Course — Week 2: OpenAI Agents SDK
+#  Week 2: OpenAI Agents SDK
 
 **Theme:** Orchestrating multi‑agent workflows with the OpenAI Agents SDK, tracing runs, async patterns, vibe coding & debugging, tool/handoff design, and basic guardrails.  
 **Labs:** Sales‑email agent (tools + handoffs), structured outputs & guardrails, and a Deep Research multi‑agent Python app.
