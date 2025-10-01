@@ -1,7 +1,5 @@
 # Lab 5 — Sidekick: LangGraph Diagram 
 
-This version fixes Mermaid syntax so it renders on GitHub.
-
 ## Main Flow
 
 ```mermaid
@@ -34,9 +32,7 @@ flowchart LR
 - **evaluator**: provides feedback and decides whether to finish or loop.
 - **MemorySaver**: persists state between steps using a thread ID.
 
-# Lab 5 — Sidekick: Gradio UI Diagram (GitHub‑compatible)
-
-This version removes quotes and special characters in node labels so GitHub’s Mermaid renderer parses it cleanly.
+# Lab 5 — Sidekick: Gradio UI Diagram
 
 ---
 
