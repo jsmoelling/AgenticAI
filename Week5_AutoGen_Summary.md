@@ -29,24 +29,26 @@ This week focuses on building **multi‑agent systems with AutoGen**, using **Au
 
 ```mermaid
 flowchart LR
-    subgraph Runtime[gRPC Worker Runtime]
-      C[Creator (RoutedAgent)]:::agent
-      A1[agent1 (generated)]:::agent
-      A2[agent2 (generated)]:::agent
-      A3[agent3 (generated)]:::agent
-      dots[…]
-    end
+  subgraph Runtime [gRPC Worker Runtime]
+    C["Creator (RoutedAgent)"]
+    A1["agent1 (generated)"]
+    A2["agent2 (generated)"]
+    A3["agent3 (generated)"]
+  end
 
-    U[Orchestrator (world.py)] -->|send filename 'agent{i}.py'| C
-    C -->|writes python code & registers| A1 & A2 & A3
-    A1 -->|optional refinement| A2
-    A2 -->|optional refinement| A3
-    A3 -->|optional refinement| A1
-    A1 -->|final idea| U
-    A2 -->|final idea| U
-    A3 -->|final idea| U
+  U["Orchestrator (world.py)"] -->|"send filename 'agent{{i}}.py'"| C
 
-classDef agent fill:#f3f4f6,stroke:#111,stroke-width:1px,rx:8,ry:8
+  C -->|"writes python code and registers"| A1
+  C -->|"writes python code and registers"| A2
+  C -->|"writes python code and registers"| A3
+
+  A1 -->|"optional refinement"| A2
+  A2 -->|"optional refinement"| A3
+  A3 -->|"optional refinement"| A1
+
+  A1 -->|"final idea"| U
+  A2 -->|"final idea"| U
+  A3 -->|"final idea"| U
 ```
 
 **Flow summary**
